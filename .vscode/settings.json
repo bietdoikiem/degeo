@@ -1,0 +1,4 @@
+{
+  "cSpell.words": ["browserslist"],
+  "eslint.workingDirectories": ["backend", "frontend"]
+}
