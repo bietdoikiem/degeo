@@ -65,24 +65,77 @@ params : value of the above values
 */
 
 // select API 
-// select API
 router.get('/', async (req, res) => {
 	let query;
+    let params;
 	if (req.body.filter) {
 		var filter = buildFilterQuery(req.body.filter);
 		query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`;
+        params = req.body.params;
 	} else {
 		query = 'SELECT * FROM location';
+        params = []
 	}
 
 	try {
-		const result = await SelectData(client, query, req.body.params);
-		return res.json(result.first());
+		const result = await SelectData(client, query,params);
+		return res.json(result.rows);
 	} catch (error) {
 		console.log(error);
 		return res.status(400);
 	}
 });
+
+// select one API 
+router.get('/code/:code', async (req, res) => {
+	var query = "SELECT * FROM location where code = ? ";
+    var params = [req.params.code]
+
+    try {
+		const result = await SelectData(client, query, params);
+		return res.json(result.first());
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	
+});
+
+// add theme api 
+
+router.put("/themes/:theme", async (req, res) => {
+	var query = "UPDATE location SET subthemes = ? + subthemes";
+    var params = [[req.params.theme]]
+
+    try {
+		await SelectData(client, query, params);
+        var message = `theme ${req.params.theme} added`
+		return res.json(message);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	
+});
+
+// add video api 
+
+router.put("/videolink/", async (req, res) => {
+	var query = "UPDATE location SET videolink = ? + videolink";
+    var params = [req.body.params]
+
+    try {
+		await SelectData(client, query, params);
+        var message = `videos added`
+		return res.json(message);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	
+});
+
+
 
 // delete API 
 router.delete("/",async(req,res) => {

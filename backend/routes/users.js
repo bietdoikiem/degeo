@@ -87,6 +87,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+  // var filter = buildFilterQuery(req.body.filter)
+  var filter = "username = ? and password = ?";
+  var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`;
+  try {
+    var result = await SelectData(client, query, req.body.params);
+    return res.json(result.first());
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+});
+
 // delete API
 router.delete("/", async (req, res) => {
   var filter = buildFilterQuery(req.body.filter);
