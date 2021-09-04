@@ -67,15 +67,18 @@ params : value of the above values
 // select API 
 router.get('/', async (req, res) => {
 	let query;
+    let params;
 	if (req.body.filter) {
 		var filter = buildFilterQuery(req.body.filter);
 		query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`;
+        params = req.body.params;
 	} else {
 		query = 'SELECT * FROM location';
+        params = []
 	}
 
 	try {
-		const result = await SelectData(client, query, req.body.params);
+		const result = await SelectData(client, query,params);
 		return res.json(result.rows);
 	} catch (error) {
 		console.log(error);
