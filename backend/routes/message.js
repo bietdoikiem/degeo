@@ -1,19 +1,23 @@
 var express = require('express');
 var router = express.Router();
 const { client } = require('../connect-db');
-const{InsertData,SelectData,deleteData,buildFilterQuery} = require("./BaseFunction")
+const{InsertData,UpdateData,SelectData,deleteData,buildFilterQuery} = require("./BaseFunction")
 // const {v4 : uuidv4} = require('uuid4')
-const TimeUuid = require('cassandra-driver').types.TimeUuid;
+// const TimeUuid = require('cassandra-driver').types.TimeUuid;
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO message (time, user,room,content) VALUES (?,?,?,?)"
+    var query = "INSERT INTO message (time, user,room,content) VALUES (?,?,?,?)";
     try{
         console.log("begin log data")
-        var params = [TimeUuid.now()]
+        var params = [Date.now()]
         params.push(...req.body.params)
+        var roommessageQuery = 
+        `UPDATE roommessage SET messages = ? + messages WHERE room = ?`;
         console.log(params)
+        await UpdateData(client,roommessageQuery,[[(params[0])],params[2]]);
         await InsertData(client,query,params);
+        
         console.log("data inputed")
         res.json({
           message: `message at ${params[0]} created successfully.`,
@@ -67,4 +71,6 @@ router.delete("/",async(req,res) => {
     }
     return res.status(200)
 })
+
+
 module.exports = router;

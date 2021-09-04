@@ -1,6 +1,5 @@
 const { client } = require('./connect-db');
 
-
 function createTable(schema,name){
     const query = `CREATE TABLE IF NOT EXISTS miraclekidsdb.${name} ${schema}`;
     return client.execute(query);
@@ -8,8 +7,8 @@ function createTable(schema,name){
 
 async function createAllTable(){
     // user table
-    var userTable = "user";
-    var userTableSchema = "(username text ,email text, avatar text, password text, PRIMARY KEY (email,username));";
+    var userTable = "users";
+    var userTableSchema = "(username text, password text, avatar text, PRIMARY KEY (username));";
     createTable(userTableSchema,userTable);
 
     // City table
@@ -19,7 +18,7 @@ async function createAllTable(){
 
     // Room table
     var RoomTable = "room";
-    var RoomTableSchema = "( participants list<text>, name text, Service list<text>, messages list<frozen<map<text,text>>>,games list<text>, PRIMARY KEY (name));";
+    var RoomTableSchema = "( name text, participants list<text>, Service list<text>,games list<text>, PRIMARY KEY (name));";
     createTable(RoomTableSchema,RoomTable);
 
     // Playlist table
@@ -39,8 +38,13 @@ async function createAllTable(){
 
     // message table
     var messageTable = "message" ;
-    var MessageTableSchema = "(time timeuuid,user text, room text,content text, PRIMARY KEY (time, user));";
+    var MessageTableSchema = "(time double,user text, room text,content text, PRIMARY KEY (time, room));";
     createTable(MessageTableSchema,messageTable);
+
+    // message room table
+    var RoomMessageTable = "roommessage" ;
+    var RoomMessageTableSchema = "(room text,messages list<double>,PRIMARY KEY (room));";
+    createTable(RoomMessageTableSchema,RoomMessageTable);
 
 	console.log("Successfully create all table!")
 }

@@ -29,8 +29,13 @@ async function run() {
 	// var query ="select * from users"
 	// var params = []
 
+	// var query = "SELECT * FROM roommessage WHERE room = ?"
+	// var params = ["Arsenal Fan"]
+
 	// const result = await client.execute(query,params);
 	// console.log(result.rows);
+
+	
 
 	// Execute a query
 	[
@@ -41,10 +46,12 @@ async function run() {
 		'game',
 		'video',
 		'message',
+		"roommessage",
 	].forEach(async (table) => {
 		const rs = await client.execute(
 			`SELECT * FROM miraclekidsdb.${table}`,
 		);
+		
 		console.log(
 			`Your cluster for table ${table} returned ${rs.rowLength} row(s)`,
 		);

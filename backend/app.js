@@ -12,6 +12,7 @@ var gameRouter = require("./routes/Game");
 var videoRouter = require("./routes/Video");
 var playlistRouter = require("./routes/playlist");
 var messageRouter = require("./routes/message");
+var roomRouter = require("./routes/Room");
 
 var app = express();
 
@@ -30,8 +31,9 @@ app.use('/users', usersRouter);
 app.use("/locations",locationRouter);
 app.use("/games",gameRouter);
 app.use("/videos",videoRouter);
-app.use("/playlists",playlistRouter)
+app.use("/playlists",playlistRouter);
 app.use("/messages",messageRouter);
+app.use("/rooms",roomRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
