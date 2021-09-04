@@ -32,5 +32,5 @@ yarn.lock
 !.yarn/sdks
 !.yarn/versions
 
-# Environment varialbes
+# Environment variables
 .env

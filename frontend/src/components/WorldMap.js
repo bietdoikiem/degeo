@@ -1,61 +1,57 @@
-import React, { useEffect, useRef } from 'react';
-import * as mapboxgl from 'mapbox-gl';
+import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
-// Redux imports
-import { useSelector, useDispatch } from 'react-redux';
-import { actions as locationActions } from '../redux/ducks/location';
+import ReactMapGL, { Marker, FlyToInterpolator } from 'react-map-gl';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions as WorldMapActions } from '../redux/ducks/worldmap';
 
-// Declare mapboxgl accessibility
-mapboxgl.accessToken = process.env.REACT_APP_MAPGL_PUBLIC_TOKEN;
-
-const mockData = {
-  loading: false,
-  locations: [
-    {
-      name: 'Tokyo',
-      lat: 35.6762,
-      long: 139.6503,
-    },
-  ],
-  error: '',
-};
-
-function WorldMap() {
-  /**
-   * loading: bool,
-   * locations: []
-   * error: error.message
-   */
-  const data = useSelector((state) => state.location);
+function WorldMap({ locations }) {
+  const currentViewport = useSelector((state) => state.worldmap);
   const dispatch = useDispatch();
-  const mapContainer = useRef(null);
-  const map = useRef(null);
 
-  useEffect(() => {
-    try {
-      dispatch(locationActions.fetchLocations());
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, [dispatch]);
-
-  // TODO: Continue to do the MapBoxGL
-  // Invoke MapBoxGL map
-  useEffect(() => {
-    if (map.current) return; // initialize map only once
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [mockData.locations[0].long, mockData.locations[0].lat],
-      zoom: 8,
-    });
-  });
+  const onViewportCHange = (viewport) => {
+    dispatch(WorldMapActions.moveViewport(viewport));
+  };
 
   return (
     <>
-      <Box ref={mapContainer} h="100vh" />
+      <ReactMapGL
+        latitude={currentViewport.latitude}
+        longitude={currentViewport.longitude}
+        zoom={currentViewport.zoom}
+        width="100vw"
+        height="100vh"
+        mapStyle="mapbox://styles/bietdoikiem/ckt5j3dq908rz17o0zg4jr0fc"
+        onViewportChange={onViewportCHange}
+        transitionDuration={20}
+        transitionInterpolator={new FlyToInterpolator()}
+      >
+        {locations.map((location) => (
+          <Marker
+            latitude={location.latitude}
+            longitude={location.longitude}
+            offsetTop={-10}
+          >
+            <Box
+              as="div"
+              className="pin bounce"
+              onClick={() => console.log(`Hello ${location.name}`)}
+            />
+            <Box as="div" className="pulse" />
+          </Marker>
+        ))}
+      </ReactMapGL>
     </>
   );
 }
+
+WorldMap.propTypes = {
+  locations: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      lat: PropTypes.number.isRequired,
+      long: PropTypes.number.isRequired,
+    })
+  ),
+};
 
 export default WorldMap;
