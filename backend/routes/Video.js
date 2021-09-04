@@ -2,7 +2,14 @@ var express = require('express');
 var router = express.Router();
 const { client } = require('../connect-db');
 
-const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQuery} = require("./BaseFunction")
+const {
+	InsertData,
+	SelectData,
+	UpdateData,
+	deleteData,
+	buildFilterQuery,
+	buildUpdateQuery,
+} = require('./BaseFunction');
 
 // Create API 
 router.post("/", async (req,res) => {
@@ -22,7 +29,7 @@ router.post("/", async (req,res) => {
     return res.status(200)
 })
 
-// update API 
+// update API
 /*
 body format for update API should have look like this
 updates : array of field to updates 
