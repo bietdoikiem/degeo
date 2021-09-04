@@ -15,7 +15,6 @@ function WorldMap({ locations }) {
   return (
     <>
       <ReactMapGL
-								mapboxApiAccessToken="pk.eyJ1IjoiYmlldGRvaWtpZW0iLCJhIjoiY2tzY29hb2FoMGlvYjJvb2FqeWdyd2Y2cyJ9.MozD0qknoMddWPHISkhdXA"
         latitude={currentViewport.latitude}
         longitude={currentViewport.longitude}
         zoom={currentViewport.zoom}
