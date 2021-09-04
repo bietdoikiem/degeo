@@ -15,6 +15,7 @@ var videoRouter = require('./routes/Video');
 var roomRouter = require('./routes/Room');
 var playlistRouter = require('./routes/playlist');
 var messageRouter = require('./routes/message');
+const cors = require('cors');
 
 var app = express();
 
@@ -22,6 +23,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
