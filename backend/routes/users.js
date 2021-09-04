@@ -13,7 +13,7 @@ const {
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO users (username, avatar, password) VALUES (?,?,?)"
+    var query = "INSERT INTO users (username,password , avatar) VALUES (?,?,?)"
     try{
         console.log("begin log data")
         var params = req.body.params
@@ -77,7 +77,7 @@ params : value of the above values
 // select API 
 router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT username,avatar FROM users WHERE ${filter} ALLOW FILTERING`
+    var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`
     try{
         var result = await SelectData(client,query,req.body.params);
         return res.json(result.first())
