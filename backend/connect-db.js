@@ -1,4 +1,5 @@
 const { Client } = require('cassandra-driver');
+const {InsertData} = require("./BaseFunction")
 
 const client = new Client({
 	cloud: {
@@ -12,12 +13,35 @@ const client = new Client({
 	keyspace: 'miraclekidsdb',
 });
 
+
+
+
+
+
 async function run() {
 	await client.connect();
+	// var query = "INSERT INTO users (username, email, avatar, password) VALUES (?,?,?,?)";
+	// var params = ["Dat711","Dat711@gmail.com","12345","123456"];
+
+	// var query = "UPDATE users SET avatar = ?, password = ? WHERE username = ? and email = ?";
+	// var params = ["178906","189023","Dat711","Dat711@gmail.com"];
+
+	// var query = "select * from users where username = ? ALLOW FILTERING"
+	// var params = ["Dat"]
+
+	// var query = "DELETE FROM users where username = ? and email = ?";
+	// var params = ["Dat","Dat@gmail.com"];
+
+	// var query ="select * from users"
+	// var params = []
+
+	// const result = await client.execute(query,params);
+	// console.log(result.rows);
+
 
 	// Execute a query
 	[
-		'user',
+		'users',
 		'location',
 		'room',
 		'playlist',
