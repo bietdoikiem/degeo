@@ -8,6 +8,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-unused-imports": "^1.1.4",
     "lint-staged": "^11.1.2"
   },
@@ -20,6 +21,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "framer-motion": "^4",
+    "mapbox-gl": "^2.4.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
