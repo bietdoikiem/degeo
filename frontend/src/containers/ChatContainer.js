@@ -9,7 +9,9 @@ import {
   InputRightElement,
   Button,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 import * as moment from "moment";
+import { logout } from "../redux/ducks/auth/actions";
 
 const mockCurrentUser = {
   email: "cqtin0903@gmail.com",
@@ -65,7 +67,10 @@ const ChatContainer = () => {
   });
 
   const handleSend = () => {};
-
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <Box marginTop="5">
       <Center>
@@ -131,6 +136,11 @@ const ChatContainer = () => {
             </Box>
           </Center>
         </Box>
+      </Center>
+      <Center>
+        <Button width="full" colorScheme="red" onClick={handleLogout}>
+          Logout
+        </Button>
       </Center>
     </Box>
   );

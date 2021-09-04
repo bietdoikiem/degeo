@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import RoomData from "./RoomData";
 import RegisterForm from "./RegisterForm";
@@ -11,11 +11,10 @@ function Dashboard() {
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("currentUser")
   );
+  // Some function here to force the page reload while localStorage change (in the child component Login/Register/Logout)
+
   const onRegister = () => {
     setRegistered(!registered);
-  };
-  const handleLogout = () => {
-    setCurrentUser(null);
   };
 
   return (
@@ -41,9 +40,6 @@ function Dashboard() {
               Random location 🌎
             </Button>
             <ChatContainer />
-            <Button width="full" colorScheme="red" onClick={handleLogout}>
-              Logout
-            </Button>
           </Box>
         )}
         {!currentUser && !registered ? (

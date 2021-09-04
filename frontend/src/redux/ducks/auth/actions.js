@@ -42,7 +42,7 @@ export const login =
       );
       const currentUserData = response.data;
       if (currentUserData) {
-        localStorage.setItem(currentUserData);
+        localStorage.setItem("currentUser", currentUserData);
         dispatch(loginSuccess(currentUserData));
       }
     } catch (error) {
@@ -62,7 +62,7 @@ export const register =
         }
       );
       const currentUserData = response.data;
-      dispatch(registerSuccess(currentUserData));
+      dispatch(registerSuccess("currentUser", currentUserData));
     } catch (error) {
       dispatch(authRequestFailure(error.message));
     }
