@@ -1,5 +1,5 @@
 const { Client } = require('cassandra-driver');
-const {InsertData} = require("./BaseFunction")
+const {InsertData} = require("./routes/BaseFunction")
 
 const client = new Client({
 	cloud: {

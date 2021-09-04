@@ -1,9 +1,9 @@
-const app = require("./app");
-const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQuery} = require("./BaseFunction")
+const app = require("../app");
+const{InsertData,SelectData,UpdateData,deleteData} = require("./BaseFunction");
 
 // Create API 
-app.post("/users/", async (req,res) => {
-    var query = "INSERT INTO users (username, email, avatar, password) VALUES (?,?,?,?)"
+app.post("/location/", async (req,res) => {
+    var query = "INSERT INTO location (username, email, avatar, password) VALUES (?,?,?,?)"
     try{
         result = await InsertData(query,req.body);
     }
@@ -14,7 +14,7 @@ app.post("/users/", async (req,res) => {
     return res.status(200)
 })
 
-// update API 
+
 /*
 body format for update API should have look like this
 updates : array of field to updates 
@@ -29,9 +29,11 @@ params : value of the above values
 }
 
 */
-app.get("/users/",async (req,res) =>{
+
+// update API 
+app.get("/location/",async (req,res) =>{
     var updates = buildUpdateQuery(req.body.updates);
-    var filter = buildFilterQuery(req.body.filter);
+    var filter = buildFilterQuery(req.body.filters);
     var query = `UPDATES users SET ${updates} WHERE ${filter} ALLOW FILTERING`
     try{
         result = await UpdateData(query,req.body.params);
@@ -40,7 +42,7 @@ app.get("/users/",async (req,res) =>{
         console.log(error)
         return res.status(400)
     }
-    return res.status(200)
+    return res.json(result)
 }) 
 
 /*
@@ -57,11 +59,11 @@ params : value of the above values
 */
 
 // select API 
-app.get("/users/",async (req,res) =>{
+app.put("/location/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM users WHERE ${filter} ALLOW FILTERING`
+    var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`
     try{
-        result = await SelectData(query,req.body.params);
+        result = await InsertData(query,req.body.params);
     }
     catch(error){
         console.log(error)
@@ -71,11 +73,11 @@ app.get("/users/",async (req,res) =>{
 }) 
 
 // delete API 
-app.delete("/users/",async(req,res) => {
+app.delete("/location/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from users WHERE ${filter} ALLOW FILTERING`
+    var query = `Delete from location WHERE ${filter}`
     try{
-        result = await deleteData(query,req.body);
+        result = await InsertData(query,req.body);
     }
     catch(error){
         console.log(error)
@@ -83,6 +85,12 @@ app.delete("/users/",async(req,res) => {
     }
     return res.status(200)
 })
+
+
+
+
+
+
 
 
 
