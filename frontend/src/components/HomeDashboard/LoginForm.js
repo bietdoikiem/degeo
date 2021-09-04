@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/ducks/auth/actions";
 
 function LoginForm() {
-		const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
     useFormik({
       initialValues: {
@@ -18,7 +18,7 @@ function LoginForm() {
         password: Yup.string().required("Password can't be empty"),
       }),
       onSubmit: (v) => {
-							dispatch(login({email: v.email, password: v.password}))
+        dispatch(login({ email: v.email, password: v.password }));
       },
     });
 
