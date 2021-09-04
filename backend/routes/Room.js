@@ -75,19 +75,8 @@ params : value of the above values
 
 // select one API
 router.get('/', async (req, res) => {
-<<<<<<< HEAD
 	var filter = buildFilterQuery(req.body.filter);
 	var query = `SELECT * FROM room WHERE ${filter} ALLOW FILTERING`;
-=======
-	let query;
-	if (req.body.filter) {
-		var filter = buildFilterQuery(req.body.filter);
-		query = `SELECT * FROM room WHERE ${filter} ALLOW FILTERING`;
-	} else {
-		query = 'SELECT * FROM room';
-	}
-
->>>>>>> 110e0bdacd44793b1ca00811baafc2c9fa7988c1
 	try {
 		const result = await SelectData(client, query, req.body.params);
 		return res.json(result.first());
@@ -111,7 +100,6 @@ router.delete('/', async (req, res) => {
 	}
 });
 
-<<<<<<< HEAD
 // get all message of a room API 
 router.get("/messages/",async(req,res)=>{
 	var filter = buildFilterQuery(req.body.filter)
@@ -128,8 +116,6 @@ router.get("/messages/",async(req,res)=>{
 
 
 
-=======
->>>>>>> 110e0bdacd44793b1ca00811baafc2c9fa7988c1
 module.exports = router;
 
 
