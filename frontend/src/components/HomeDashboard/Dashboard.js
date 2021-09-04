@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import RoomData from "./RoomData";
 import RegisterForm from "./RegisterForm";
