@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const { client } = require('../connect-db');
-const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQuery} = require("./BaseFunction")
+const{InsertData,SelectData,deleteData,buildFilterQuery} = require("./BaseFunction")
 // const {v4 : uuidv4} = require('uuid4')
-const Uuid = require('cassandra-driver').types.Uuid;
 const TimeUuid = require('cassandra-driver').types.TimeUuid;
 
 // Create API 
@@ -14,7 +13,7 @@ router.post("/", async (req,res) => {
         var params = [TimeUuid.now()]
         params.push(...req.body.params)
         console.log(params)
-        result = await InsertData(client,query,params);
+        await InsertData(client,query,params);
         console.log("data inputed")
         res.json({
           message: `message at ${params[0]} created successfully.`,
@@ -44,13 +43,14 @@ router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
     var query = `SELECT * FROM message WHERE ${filter} ALLOW FILTERING`
     try{
-        result = await SelectData(client,query,req.body.params);
+        var result = await SelectData(client,query,req.body.params);
+        return res.json(result.rows)
     }
     catch(error){
         console.log(error)
         return res.status(400)
     }
-    return res.json(result.rows)
+    
 }) 
 
 // delete API 
@@ -58,7 +58,7 @@ router.delete("/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
     var query = `Delete from message WHERE ${filter}`
     try{
-        result = await deleteData(client,query,req.body.params);
+        await deleteData(client,query,req.body.params);
         res.json("message deleted")
     }
     catch(error){

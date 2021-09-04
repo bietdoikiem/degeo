@@ -9,7 +9,7 @@ router.post("/", async (req,res) => {
     var query = "INSERT INTO playlist (code ,theme, name) VALUES (?,?,?)"
     try{
         console.log("begin log data")
-        result = await InsertData(client,query,req.body.params);
+        await InsertData(client,query,req.body.params);
         console.log("data inputed")
         res.json({
           message: `playlist named ${req.body.params[2]} created successfully.`,
@@ -39,7 +39,7 @@ router.put("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter);
     var query = `UPDATE playlist SET ${updates} WHERE ${filter}`
     try{
-        result = await UpdateData(client,query,req.body.params);
+        await UpdateData(client,query,req.body.params);
         res.json("playlist updated")
     }
     catch(error){
@@ -65,13 +65,14 @@ router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
     var query = `SELECT * FROM playlist WHERE ${filter} ALLOW FILTERING`
     try{
-        result = await SelectData(client,query,req.body.params);
+        var result = await SelectData(client,query,req.body.params);
+        return res.json(result.first())
     }
     catch(error){
         console.log(error)
         return res.status(400)
     }
-    return res.json(result.first())
+    
 }) 
 
 // delete API 
@@ -79,7 +80,7 @@ router.delete("/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
     var query = `Delete from playlist WHERE ${filter}`
     try{
-        result = await deleteData(client,query,req.body.params);
+        deleteData(client,query,req.body.params);
         res.json("playlist deleted")
     }
     catch(error){
