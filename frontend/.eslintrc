@@ -2,7 +2,12 @@
   "env": {
     "browser": true
   },
-  "extends": ["airbnb", "airbnb/hooks", "prettier"],
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "prettier",
+    "plugin:react-hooks/recommended"
+  ],
   "plugins": ["prettier", "unused-imports"],
   "parserOptions": {
     "ecmaVersion": 12,
@@ -16,8 +21,9 @@
     "react/jsx-one-expression-per-line": "off",
     "indent": "off",
     "no-unused-vars": "off",
-    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-imports": ["warn"],
     "unused-imports/no-unused-vars": ["warn"],
-    "import/prefer-default-export": 0
+    "import/prefer-default-export": 0,
+    "react/require-default-props": ["off"]
   }
 }

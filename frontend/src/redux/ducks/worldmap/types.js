@@ -1,0 +1,1 @@
+export const MOVE_VIEWPORT = 'MOVE_VIEWPORT';
