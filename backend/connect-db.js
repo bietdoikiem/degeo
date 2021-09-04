@@ -14,29 +14,10 @@ const client = new Client({
 
 async function run() {
 	await client.connect();
-	// var query = "INSERT INTO users (username, email, avatar, password) VALUES (?,?,?,?)";
-	// var params = ["Dat711","Dat711@gmail.com","12345","123456"];
-
-	// var query = "UPDATE users SET avatar = ?, password = ? WHERE username = ? and email = ?";
-	// var params = ["178906","189023","Dat711","Dat711@gmail.com"];
-
-	// var query = "select * from users where username = ? ALLOW FILTERING"
-	// var params = ["Dat"]
-
-	// var query = "DELETE FROM users where username = ? and email = ?";
-	// var params = ["Dat","Dat@gmail.com"];
-
-	// var query ="select * from users"
-	// var params = []
-
-	// var query = "SELECT * FROM roommessage WHERE room = ?"
-	// var params = ["Arsenal Fan"]
-
-	// const result = await client.execute(query,params);
-	// console.log(result.rows);
 
 	
-
+	// await client.execute("DROP TABLE miraclekidsdb.location ");
+	// await client.execute("DROP TABLE miraclekidsdb.locationdetail ");
 	// Execute a query
 	[
 		'users',
@@ -52,10 +33,14 @@ async function run() {
 			`SELECT * FROM miraclekidsdb.${table}`,
 		);
 		
+		// var describe = 
+
 		console.log(
 			`Your cluster for table ${table} returned ${rs.rowLength} row(s)`,
 		);
 	});
+
+	
 
 	return { client };
 }

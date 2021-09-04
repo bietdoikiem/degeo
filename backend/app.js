@@ -15,6 +15,7 @@ var videoRouter = require("./routes/Video");
 var playlistRouter = require("./routes/playlist");
 var messageRouter = require("./routes/message");
 var roomRouter = require("./routes/Room");
+const cors = require('cors');
 
 var app = express();
 

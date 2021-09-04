@@ -77,7 +77,7 @@ params : value of the above values
 // select API 
 router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM users WHERE ${filter} ALLOW FILTERING`
+    var query = `SELECT username,avatar FROM users WHERE ${filter} ALLOW FILTERING`
     try{
         var result = await SelectData(client,query,req.body.params);
         return res.json(result.first())
