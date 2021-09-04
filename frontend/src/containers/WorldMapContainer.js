@@ -37,9 +37,9 @@ function WorldMapContainer() {
   const data = useSelector((state) => state.location);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(locationActions.fetchLocations());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(locationActions.fetchLocations());
+  // }, [dispatch]);
   return (
     <>
       <WorldMap locations={mockData.locations} />

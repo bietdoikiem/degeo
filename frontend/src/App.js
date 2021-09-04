@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <ChakraProvider>
-							<Dashboard/>
+        <Dashboard />
         <Router>
           {routes.map((route) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
