@@ -11,22 +11,23 @@ const {
 	buildUpdateQuery,
 } = require('./BaseFunction');
 
-// Create API
-router.post('/', async (req, res) => {
-	var query = 'INSERT INTO game (name, apikey) VALUES (?,?)';
-	try {
-		console.log('begin log data');
-		await InsertData(client, query, req.body.params);
-		console.log('data inputed');
-		res.json({
-			message: `game named ${req.body.params[0]} created successfully.`,
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	return res.status(200);
-});
+// Create API 
+router.post("/", async (req,res) => {
+    var query = "INSERT INTO game (name, apikey) VALUES (?,?)"
+    try{
+        console.log("begin log data")
+        await InsertData(client,query,req.body.params);
+        console.log("data inputed")
+        res.json({
+          message: `game named ${req.body.params[0]} created successfully.`,
+        });
+    }
+    catch(error){
+        console.log(error)
+        return res.status(400)
+    }
+    return res.status(200)
+})
 
 // update API
 /*
@@ -43,19 +44,20 @@ params : value of the above values
 }
 
 */
-router.put('/', async (req, res) => {
-	var updates = buildUpdateQuery(req.body.updates);
-	var filter = buildFilterQuery(req.body.filter);
-	var query = `UPDATE game SET ${updates} WHERE ${filter}`;
-	try {
-		await UpdateData(client, query, req.body.params);
-		res.json('game updated');
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	return res.status(200);
-});
+router.put("/",async (req,res) =>{
+    var updates = buildUpdateQuery(req.body.updates);
+    var filter = buildFilterQuery(req.body.filter);
+    var query = `UPDATE game SET ${updates} WHERE ${filter}`
+    try{
+        await UpdateData(client,query,req.body.params);
+        res.json("game updated")
+    }
+    catch(error){
+        console.log(error)
+        return res.status(400)
+    }
+    return res.status(200)
+}) 
 
 /*
 body format for request of delete and select API should have look like this
@@ -88,17 +90,18 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// delete API
-router.delete('/', async (req, res) => {
-	var filter = buildFilterQuery(req.body.filter);
-	var query = `Delete from game WHERE ${filter}`;
-	try {
-		await deleteData(client, query, req.body.params);
-		res.json('game deleted');
-		return res.status(200);
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-});
+// delete API 
+router.delete("/",async(req,res) => {
+    var filter = buildFilterQuery(req.body.filter)
+    var query = `Delete from game WHERE ${filter}`
+    try{
+        await deleteData(client,query,req.body.params);
+        res.json("game deleted")
+    }
+    catch(error){
+        console.log(error)
+        return res.status(400)
+    }
+    return res.status(200)
+})
 module.exports = router;

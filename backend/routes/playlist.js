@@ -11,23 +11,23 @@ const {
 	buildUpdateQuery,
 } = require('./BaseFunction');
 
-// Create API
-router.post('/', async (req, res) => {
-	var query =
-		'INSERT INTO playlist (code ,theme, name) VALUES (?,?,?)';
-	try {
-		console.log('begin log data');
-		await InsertData(client, query, req.body.params);
-		console.log('data inputed');
-		res.json({
-			message: `playlist named ${req.body.params[2]} created successfully.`,
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	return res.status(200);
-});
+// Create API 
+router.post("/", async (req,res) => {
+    var query = "INSERT INTO playlist (code ,theme, name) VALUES (?,?,?)"
+    try{
+        console.log("begin log data")
+        await InsertData(client,query,req.body.params);
+        console.log("data inputed")
+        res.json({
+          message: `playlist named ${req.body.params[2]} created successfully.`,
+        });
+    }
+    catch(error){
+        console.log(error)
+        return res.status(400)
+    }
+    return res.status(200)
+})
 
 // update API
 /*
@@ -41,19 +41,20 @@ params : value of the above values
     params : [field to update1 value, field to update 2 value ,field to filter 1 value, field to filter 2 value  ]
 }
 */
-router.put('/', async (req, res) => {
-	var updates = buildUpdateQuery(req.body.updates);
-	var filter = buildFilterQuery(req.body.filter);
-	var query = `UPDATE playlist SET ${updates} WHERE ${filter}`;
-	try {
-		await UpdateData(client, query, req.body.params);
-		res.json('playlist updated');
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	return res.status(200);
-});
+router.put("/",async (req,res) =>{
+    var updates = buildUpdateQuery(req.body.updates);
+    var filter = buildFilterQuery(req.body.filter);
+    var query = `UPDATE playlist SET ${updates} WHERE ${filter}`
+    try{
+        await UpdateData(client,query,req.body.params);
+        res.json("playlist updated")
+    }
+    catch(error){
+        console.log(error)
+        return res.status(400)
+    }
+    return res.status(200)
+}) 
 
 /*
 body format for request of delete and select API should have look like this
@@ -85,17 +86,18 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// delete API
-router.delete('/', async (req, res) => {
-	var filter = buildFilterQuery(req.body.filter);
-	var query = `Delete from playlist WHERE ${filter}`;
-	try {
-		await deleteData(client, query, req.body.params);
-		res.json('playlist deleted');
-		return res.status(200);
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-});
+// delete API 
+router.delete("/",async(req,res) => {
+    var filter = buildFilterQuery(req.body.filter)
+    var query = `Delete from playlist WHERE ${filter}`
+    try{
+        deleteData(client,query,req.body.params);
+        res.json("playlist deleted")
+    }
+    catch(error){
+        console.log(error)
+        return res.status(400)
+    }
+    return res.status(200)
+})
 module.exports = router;
