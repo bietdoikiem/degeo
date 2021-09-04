@@ -6,13 +6,13 @@ const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQu
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO location (name, lattitude, longtitude, code, region,theme) VALUES (?,?,?,?,?,?)"
+    var query = "INSERT INTO game (name, apikey) VALUES (?,?)"
     try{
         console.log("begin log data")
         result = await InsertData(client,query,req.body.params);
         console.log("data inputed")
         res.json({
-          message: `Location named ${req.body.params[0]} created successfully.`,
+          message: `game named ${req.body.params[0]} created successfully.`,
         });
     }
     catch(error){
@@ -40,10 +40,10 @@ params : value of the above values
 router.put("/",async (req,res) =>{
     var updates = buildUpdateQuery(req.body.updates);
     var filter = buildFilterQuery(req.body.filter);
-    var query = `UPDATE location SET ${updates} WHERE ${filter}`
+    var query = `UPDATE game SET ${updates} WHERE ${filter}`
     try{
         result = await UpdateData(client,query,req.body.params);
-        res.json("location updated")
+        res.json("game updated")
     }
     catch(error){
         console.log(error)
@@ -66,7 +66,7 @@ params : value of the above values
 // select API 
 router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`
+    var query = `SELECT * FROM game WHERE ${filter} ALLOW FILTERING`
     try{
         result = await SelectData(client,query,req.body.params);
     }
@@ -80,10 +80,10 @@ router.get("/",async (req,res) =>{
 // delete API 
 router.delete("/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from location WHERE ${filter}`
+    var query = `Delete from game WHERE ${filter}`
     try{
         result = await deleteData(client,query,req.body.params);
-        res.json("location deleted")
+        res.json("game deleted")
     }
     catch(error){
         console.log(error)

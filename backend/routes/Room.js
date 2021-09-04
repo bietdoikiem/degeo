@@ -6,7 +6,7 @@ const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQu
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO location (name, lattitude, longtitude, code, region,theme) VALUES (?,?,?,?,?,?)"
+    var query = "INSERT INTO room (participants, name, Service, messages, games,theme) VALUES (?,?,?,?,?,?)"
     try{
         console.log("begin log data")
         result = await InsertData(client,query,req.body.params);

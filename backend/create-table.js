@@ -13,33 +13,33 @@ async function createAllTable(){
     createTable(userTableSchema,userTable);
 
     // City table
-    var CityTable = "locations";
+    var CityTable = "location";
     var CityTableSchema = "(name text, lattitude double, longtitude double, code text ,region text, theme list<text>, PRIMARY KEY (code,name) );" ;
     createTable(CityTableSchema,CityTable);
 
     // Room table
-    var RoomTable = "rooms";
+    var RoomTable = "room";
     var RoomTableSchema = "( participants list<text>, name text, Service list<text>, messages list<frozen<map<text,text>>>,games list<text>, PRIMARY KEY (name));";
     createTable(RoomTableSchema,RoomTable);
 
     // Playlist table
-    var PlaylistTable = "playlists";
+    var PlaylistTable = "playlist";
     var PlaylistTableSchema = "( code text , theme text, name text , PRIMARY KEY (code,name));";
     createTable(PlaylistTableSchema,PlaylistTable);
 
     // Game table
-    var gameTable = "games";
+    var gameTable = "game";
     var gameTableSchema = "( name text, apikey text,  PRIMARY KEY (name));" ;
     createTable(gameTableSchema,gameTable);
 
     // Video table
-    var VideoTable = "videos";
+    var VideoTable = "video";
     var VideoTableSchema = "(name text,link text, theme text, PRIMARY KEY (name));";
     createTable(VideoTableSchema,VideoTable);
 
     // message table
-    var messageTable = "messages" ;
-    var MessageTableSchema = "(user text, time timeuuid, room text,content text, PRIMARY KEY (room,time, user));";
+    var messageTable = "message" ;
+    var MessageTableSchema = "(time timeuuid,user text, room text,content text, PRIMARY KEY (time, user));";
     createTable(MessageTableSchema,messageTable);
 
 	console.log("Successfully create all table!")

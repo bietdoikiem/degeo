@@ -4,7 +4,7 @@ const { run } = require('./connect-db');
 const {createAllTable} = require("./create-table")
 
 const PORT = 3000;
-// createAllTable();
+createAllTable();
 run();
 // app.use("/users",user)
 app.listen(PORT, () => {

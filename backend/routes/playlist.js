@@ -6,13 +6,13 @@ const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQu
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO location (name, lattitude, longtitude, code, region,theme) VALUES (?,?,?,?,?,?)"
+    var query = "INSERT INTO playlist (code ,theme, name) VALUES (?,?,?)"
     try{
         console.log("begin log data")
         result = await InsertData(client,query,req.body.params);
         console.log("data inputed")
         res.json({
-          message: `Location named ${req.body.params[0]} created successfully.`,
+          message: `playlist named ${req.body.params[2]} created successfully.`,
         });
     }
     catch(error){
@@ -28,22 +28,19 @@ body format for update API should have look like this
 updates : array of field to updates 
 filters : array of field declare in primary key to updates , array of length 1 is fine
 params : value of the above values 
-
 {
     updates : ["field to update1", "field to update 2"],
     filters : ["field to filter 1","field to filter 2"],
     params : [field to update1 value, field to update 2 value ,field to filter 1 value, field to filter 2 value  ]
-
 }
-
 */
 router.put("/",async (req,res) =>{
     var updates = buildUpdateQuery(req.body.updates);
     var filter = buildFilterQuery(req.body.filter);
-    var query = `UPDATE location SET ${updates} WHERE ${filter}`
+    var query = `UPDATE playlist SET ${updates} WHERE ${filter}`
     try{
         result = await UpdateData(client,query,req.body.params);
-        res.json("location updated")
+        res.json("playlist updated")
     }
     catch(error){
         console.log(error)
@@ -66,7 +63,7 @@ params : value of the above values
 // select API 
 router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`
+    var query = `SELECT * FROM playlist WHERE ${filter} ALLOW FILTERING`
     try{
         result = await SelectData(client,query,req.body.params);
     }
@@ -80,10 +77,10 @@ router.get("/",async (req,res) =>{
 // delete API 
 router.delete("/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from location WHERE ${filter}`
+    var query = `Delete from playlist WHERE ${filter}`
     try{
         result = await deleteData(client,query,req.body.params);
-        res.json("location deleted")
+        res.json("playlist deleted")
     }
     catch(error){
         console.log(error)

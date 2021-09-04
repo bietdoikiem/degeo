@@ -1,18 +1,23 @@
 var express = require('express');
 var router = express.Router();
 const { client } = require('../connect-db');
-
 const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQuery} = require("./BaseFunction")
+// const {v4 : uuidv4} = require('uuid4')
+const Uuid = require('cassandra-driver').types.Uuid;
+const TimeUuid = require('cassandra-driver').types.TimeUuid;
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO location (name, lattitude, longtitude, code, region,theme) VALUES (?,?,?,?,?,?)"
+    var query = "INSERT INTO message (time, user,room,content) VALUES (?,?,?,?)"
     try{
         console.log("begin log data")
-        result = await InsertData(client,query,req.body.params);
+        var params = [TimeUuid.now()]
+        params.push(...req.body.params)
+        console.log(params)
+        result = await InsertData(client,query,params);
         console.log("data inputed")
         res.json({
-          message: `Location named ${req.body.params[0]} created successfully.`,
+          message: `message at ${req.body.params[0]} created successfully.`,
         });
     }
     catch(error){
@@ -22,35 +27,6 @@ router.post("/", async (req,res) => {
     return res.status(200)
 })
 
-// update API 
-/*
-body format for update API should have look like this
-updates : array of field to updates 
-filters : array of field declare in primary key to updates , array of length 1 is fine
-params : value of the above values 
-
-{
-    updates : ["field to update1", "field to update 2"],
-    filters : ["field to filter 1","field to filter 2"],
-    params : [field to update1 value, field to update 2 value ,field to filter 1 value, field to filter 2 value  ]
-
-}
-
-*/
-router.put("/",async (req,res) =>{
-    var updates = buildUpdateQuery(req.body.updates);
-    var filter = buildFilterQuery(req.body.filter);
-    var query = `UPDATE location SET ${updates} WHERE ${filter}`
-    try{
-        result = await UpdateData(client,query,req.body.params);
-        res.json("location updated")
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-}) 
 
 /*
 body format for request of delete and select API should have look like this
@@ -66,7 +42,7 @@ params : value of the above values
 // select API 
 router.get("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`
+    var query = `SELECT * FROM message WHERE ${filter} ALLOW FILTERING`
     try{
         result = await SelectData(client,query,req.body.params);
     }
@@ -74,16 +50,16 @@ router.get("/",async (req,res) =>{
         console.log(error)
         return res.status(400)
     }
-    return res.json(result.first())
+    return res.json(result.rows)
 }) 
 
 // delete API 
 router.delete("/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from location WHERE ${filter}`
+    var query = `Delete from message WHERE ${filter}`
     try{
         result = await deleteData(client,query,req.body.params);
-        res.json("location deleted")
+        res.json("message deleted")
     }
     catch(error){
         console.log(error)

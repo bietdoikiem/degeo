@@ -16,7 +16,8 @@
 		"morgan": "~1.9.1",
 		"nodemon": "^2.0.12",
 		"package": "^1.0.1",
-		"path": "^0.12.7"
+		"path": "^0.12.7",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"eslint": "^7.32.0"
