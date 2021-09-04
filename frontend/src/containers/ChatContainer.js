@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Badge,
   Box,
@@ -8,63 +8,61 @@ import {
   InputGroup,
   InputRightElement,
   Button,
-} from '@chakra-ui/react';
-import * as moment from 'moment';
+} from "@chakra-ui/react";
+import * as moment from "moment";
 
 const mockCurrentUser = {
-  email: 'cqtin0903@gmail.com',
+  email: "cqtin0903@gmail.com",
 };
 const mockMessages = [
   {
-    sender: 'cqtin0903@gmail.com',
-    body: 'Hi there',
+    sender: "cqtin0903@gmail.com",
+    body: "Hi there",
     createdAt: moment().unix(),
   },
   {
-    sender: 'cqtin0903@gmail.com',
-    body: 'How are you',
-    createdAt: moment().subtract(5, 'minutes').unix(),
+    sender: "cqtin0903@gmail.com",
+    body: "How are you",
+    createdAt: moment().subtract(5, "minutes").unix(),
   },
   {
-    sender: 'userA@gmail.com',
-    body: 'Toi ten la Tin',
-    createdAt: moment().subtract(10, 'minutes').unix(),
+    sender: "userA@gmail.com",
+    body: "Toi ten la Tin",
+    createdAt: moment().subtract(10, "minutes").unix(),
   },
   {
-    sender: 'userB@gmail.com',
-    body: 'RMIT University',
-    createdAt: moment().subtract(2, 'minutes').unix(),
+    sender: "userB@gmail.com",
+    body: "RMIT University",
+    createdAt: moment().subtract(2, "minutes").unix(),
   },
   {
-    sender: 'cqtin0903@gmail.com',
+    sender: "cqtin0903@gmail.com",
     body: "Hi there. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five cez",
     createdAt: moment().unix(),
   },
   {
-    sender: 'cqtin0903@gmail.com',
-    body: 'How are you',
-    createdAt: moment().subtract(5, 'minutes').unix(),
+    sender: "cqtin0903@gmail.com",
+    body: "How are you",
+    createdAt: moment().subtract(5, "minutes").unix(),
   },
   {
-    sender: 'userA@gmail.com',
-    body: 'Toi ten la Tin',
-    createdAt: moment().subtract(10, 'minutes').unix(),
+    sender: "userA@gmail.com",
+    body: "Toi ten la Tin",
+    createdAt: moment().subtract(10, "minutes").unix(),
   },
   {
-    sender: 'userB@gmail.com',
-    body: 'RMIT University',
-    createdAt: moment().subtract(2, 'minutes').unix(),
+    sender: "userB@gmail.com",
+    body: "RMIT University",
+    createdAt: moment().subtract(2, "minutes").unix(),
   },
 ];
 
 const ChatContainer = () => {
   const [formValues, setFormValue] = React.useState({
-    username: '',
-    password: '',
-    message: '',
+    username: "",
+    password: "",
+    message: "",
   });
-
-  const handleLogout = () => {};
 
   const handleSend = () => {};
 
@@ -133,11 +131,6 @@ const ChatContainer = () => {
             </Box>
           </Center>
         </Box>
-      </Center>
-      <Center marginTop="3">
-        <Button width="full" colorScheme="red" onClick={handleLogout}>
-          Logout
-        </Button>
       </Center>
     </Box>
   );

@@ -8,10 +8,14 @@ import ChatContainer from "../../containers/ChatContainer";
 function Dashboard() {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const [registered, setRegistered] = useState(false);
-  const currentUser = !localStorage.getItem("currentUser");
-
+  const [currentUser, setCurrentUser] = useState(
+    localStorage.getItem("currentUser")
+  );
   const onRegister = () => {
     setRegistered(!registered);
+  };
+  const handleLogout = () => {
+    setCurrentUser(null);
   };
 
   return (
@@ -37,6 +41,9 @@ function Dashboard() {
               Random location 🌎
             </Button>
             <ChatContainer />
+            <Button width="full" colorScheme="red" onClick={handleLogout}>
+              Logout
+            </Button>
           </Box>
         )}
         {!currentUser && !registered ? (
