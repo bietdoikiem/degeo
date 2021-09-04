@@ -10,8 +10,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/ducks/auth/actions";
 
 function RegisterForm() {
+		const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
     useFormik({
       initialValues: {
@@ -33,7 +36,7 @@ function RegisterForm() {
         }),
       }),
       onSubmit: (v) => {
-        alert(JSON.stringify(v, null, 2));
+									dispatch(register({email: v.email, password: v.password}))
       },
     });
 
@@ -81,7 +84,7 @@ function RegisterForm() {
             <Text color="red">{errors.confirmPassword}</Text>
           ) : null}
           <FormControl>
-            <Button colorScheme="green" type="submit">
+            <Button w="full" marginTop="5" colorScheme="teal" type="submit">
               Register
             </Button>
           </FormControl>

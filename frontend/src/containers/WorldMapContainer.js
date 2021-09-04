@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 // Redux imports
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as locationActions } from '../redux/ducks/location';

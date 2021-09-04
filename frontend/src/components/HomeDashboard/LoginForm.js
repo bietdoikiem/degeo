@@ -2,20 +2,23 @@ import React from "react";
 import { useFormik } from "formik";
 import { Stack, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/ducks/auth/actions";
 
 function LoginForm() {
+		const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
     useFormik({
       initialValues: {
-        username: "",
+        email: "",
         password: "",
       },
       validationSchema: Yup.object({
-        username: Yup.string().required("Username can't be empty"),
+        email: Yup.string().required("Email can't be empty"),
         password: Yup.string().required("Password can't be empty"),
       }),
       onSubmit: (v) => {
-        alert(JSON.stringify(v, null, 2));
+							dispatch(login({email: v.email, password: v.password}))
       },
     });
 
@@ -24,11 +27,11 @@ function LoginForm() {
       <form method="POST" onSubmit={handleSubmit}>
         <Stack>
           <FormControl isRequired>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Email</FormLabel>
             <Input
               type="text"
-              id="username"
-              value={values.username}
+              id="email"
+              value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -47,7 +50,7 @@ function LoginForm() {
             <div>{errors.password}</div>
           ) : null}
           <FormControl>
-            <Button colorScheme="blue" type="submit">
+            <Button w="full" marginTop="5" colorScheme="blue" type="submit">
               Log in to join the room!
             </Button>
           </FormControl>

@@ -1,65 +1,73 @@
-import React, { useState } from "react";
-
-import {
-  Button,
-  useDisclosure,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerContent,
-  DrawerCloseButton,
-} from "@chakra-ui/react";
-
-import LoginForm from "./LoginForm";
-import RoomData from "./RoomData";
-import RegisterForm from "./RegisterForm";
+import React, { useState } from 'react';
+import { Box, Button } from '@chakra-ui/react';
+import RoomData from './RoomData';
+import RegisterForm from './RegisterForm';
+import LoginForm from './LoginForm';
+import ChatContainer from '../../containers/ChatContainer';
 
 function Dashboard() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [register, setRegister] = useState(false);
+	// const { isOpen, onOpen, onClose } = useDisclosure();
+	const [register, setRegister] = useState(false);
+	const currentUser = !localStorage.getItem('currentUser');
 
-  const onRegister = () => {
-    setRegister(!register);
-  };
+	const onRegister = () => {
+		setRegister(!register);
+	};
 
-  return (
-    <>
-      <Button onClick={onOpen}>Open</Button>
-      <Drawer
-        placement="left"
-        isOpen={isOpen}
-        onClose={onClose}
-        size="md"
-        trapFocus={false}
-        closeOnOverlayClick={false}
-      >
-        {/* <DrawerOverlay /> */}
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Room Details</DrawerHeader>
-
-          <DrawerBody>
-            <RoomData />
-            {!register ? (
-              <>
-                <LoginForm />{" "}
-                <Button colorScheme="teal" onClick={onRegister}>
-                  Did not have account? Register
-                </Button>
-              </>
-            ) : null}
-            {register ? (
-              <>
-                <RegisterForm />
-                <Button colorScheme="blue" onClick={onRegister}>
-                  Already have account? Sign in
-                </Button>
-              </>
-            ) : null}
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    </>
-  );
+	return (
+		<>
+			<Box
+				position="absolute"
+				paddingTop="10"
+				paddingX="8"
+				zIndex={50}
+				bg="white"
+				h="full"
+				shadow="lg"
+				w={['full', '400px', '500px']}
+			>
+				<RoomData />
+				{currentUser && (
+					<Box>
+						<Button
+							w="full"
+							marginTop="5"
+							colorScheme="blue"
+							onClick={onRegister}
+						>
+							Random location 🌎
+						</Button>
+						<ChatContainer />
+					</Box>
+				)}
+				{!currentUser && !register ? (
+					<>
+						<LoginForm />
+						<Button
+							w="full"
+							marginTop="5"
+							colorScheme="teal"
+							onClick={onRegister}
+						>
+							Did not have account? Register
+						</Button>
+					</>
+				) : null}
+				{!currentUser && register ? (
+					<>
+						<RegisterForm />
+						<Button
+							w="full"
+							marginTop="5"
+							colorScheme="blue"
+							onClick={onRegister}
+						>
+							Already have account? Sign in
+						</Button>
+					</>
+				) : null}
+			</Box>
+		</>
+	);
 }
 export default Dashboard;
