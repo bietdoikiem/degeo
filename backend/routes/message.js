@@ -1,32 +1,35 @@
 var express = require('express');
 var router = express.Router();
 const { client } = require('../connect-db');
-const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQuery} = require("./BaseFunction")
+const {
+	InsertData,
+	SelectData,
+	deleteData,
+	buildFilterQuery,
+} = require('./BaseFunction');
 // const {v4 : uuidv4} = require('uuid4')
-const Uuid = require('cassandra-driver').types.Uuid;
 const TimeUuid = require('cassandra-driver').types.TimeUuid;
 
-// Create API 
-router.post("/", async (req,res) => {
-    var query = "INSERT INTO message (time, user,room,content) VALUES (?,?,?,?)"
-    try{
-        console.log("begin log data")
-        var params = [TimeUuid.now()]
-        params.push(...req.body.params)
-        console.log(params)
-        result = await InsertData(client,query,params);
-        console.log("data inputed")
-        res.json({
-          message: `message at ${req.body.params[0]} created successfully.`,
-        });
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-})
-
+// Create API
+router.post('/', async (req, res) => {
+	var query =
+		'INSERT INTO message (time, user,room,content) VALUES (?,?,?,?)';
+	try {
+		console.log('begin log data');
+		var params = [TimeUuid.now()];
+		params.push(...req.body.params);
+		console.log(params);
+		await InsertData(client, query, params);
+		console.log('data inputed');
+		res.json({
+			message: `message at ${req.body.params[0]} created successfully.`,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	return res.status(200);
+});
 
 /*
 body format for request of delete and select API should have look like this
@@ -39,32 +42,30 @@ params : value of the above values
 
 */
 
-// select API 
-router.get("/",async (req,res) =>{
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM message WHERE ${filter} ALLOW FILTERING`
-    try{
-        result = await SelectData(client,query,req.body.params);
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.json(result.rows)
-}) 
+// select API
+router.get('/', async (req, res) => {
+	var filter = buildFilterQuery(req.body.filter);
+	var query = `SELECT * FROM message WHERE ${filter} ALLOW FILTERING`;
+	try {
+		let result = await SelectData(client, query, req.body.params);
+		return res.json(result.rows);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+});
 
-// delete API 
-router.delete("/",async(req,res) => {
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from message WHERE ${filter}`
-    try{
-        result = await deleteData(client,query,req.body.params);
-        res.json("message deleted")
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-})
+// delete API
+router.delete('/', async (req, res) => {
+	var filter = buildFilterQuery(req.body.filter);
+	var query = `Delete from message WHERE ${filter}`;
+	try {
+		await deleteData(client, query, req.body.params);
+		res.json('message deleted');
+		return res.status(200);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+});
 module.exports = router;

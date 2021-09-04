@@ -9,7 +9,7 @@ router.post("/", async (req,res) => {
     var query = "INSERT INTO location (name, lattitude, longtitude, code, region,theme) VALUES (?,?,?,?,?,?)"
     try{
         console.log("begin log data")
-        result = await InsertData(client,query,req.body.params);
+        await InsertData(client,query,req.body.params);
         console.log("data inputed")
         res.json({
           message: `Location named ${req.body.params[0]} created successfully.`,
@@ -42,7 +42,7 @@ router.put("/",async (req,res) =>{
     var filter = buildFilterQuery(req.body.filter);
     var query = `UPDATE location SET ${updates} WHERE ${filter}`
     try{
-        result = await UpdateData(client,query,req.body.params);
+        await UpdateData(client,query,req.body.params);
         res.json("location updated")
     }
     catch(error){
@@ -65,6 +65,7 @@ params : value of the above values
 
 // select API 
 router.get("/",async (req,res) =>{
+				let result;
     var filter = buildFilterQuery(req.body.filter)
     var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`
     try{
@@ -82,7 +83,7 @@ router.delete("/",async(req,res) => {
     var filter = buildFilterQuery(req.body.filter)
     var query = `Delete from location WHERE ${filter}`
     try{
-        result = await deleteData(client,query,req.body.params);
+        await deleteData(client,query,req.body.params);
         res.json("location deleted")
     }
     catch(error){

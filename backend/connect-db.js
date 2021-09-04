@@ -1,5 +1,4 @@
 const { Client } = require('cassandra-driver');
-const {InsertData} = require("./routes/BaseFunction")
 
 const client = new Client({
 	cloud: {
@@ -12,11 +11,6 @@ const client = new Client({
 	},
 	keyspace: 'miraclekidsdb',
 });
-
-
-
-
-
 
 async function run() {
 	await client.connect();
@@ -37,7 +31,6 @@ async function run() {
 
 	// const result = await client.execute(query,params);
 	// console.log(result.rows);
-
 
 	// Execute a query
 	[
