@@ -1,4 +1,4 @@
 {
-  "cSpell.words": ["browserslist"],
+  "cSpell.words": ["browserslist", "mapboxgl", "MAPGL", "mapbox"],
   "eslint.workingDirectories": ["backend", "frontend"]
 }
