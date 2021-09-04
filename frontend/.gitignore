@@ -33,4 +33,5 @@ yarn.lock
 !.yarn/versions
 
 # Environment variables
-.env
+.env.development
+.env.production
