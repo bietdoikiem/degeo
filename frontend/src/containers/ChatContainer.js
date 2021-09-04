@@ -59,7 +59,7 @@ const mockMessages = [
   },
 ];
 
-const ChatContainer = () => {
+function ChatContainer(props) {
   const [formValues, setFormValue] = React.useState({
     username: "",
     password: "",
@@ -70,6 +70,8 @@ const ChatContainer = () => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
+    // eslint-disable-next-line react/prop-types
+    props.callBack(localStorage.getItem("currentUser"));
   };
   return (
     <Box marginTop="5">
@@ -144,6 +146,6 @@ const ChatContainer = () => {
       </Center>
     </Box>
   );
-};
+}
 
 export default ChatContainer;

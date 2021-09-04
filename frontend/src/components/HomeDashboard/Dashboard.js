@@ -39,13 +39,13 @@ function Dashboard() {
             >
               Random location 🌎
             </Button>
-            <ChatContainer />
+            <ChatContainer callBack={setCurrentUser} />
           </Box>
         )}
         {!currentUser && !registered ? (
           <>
             <RoomData />
-            <LoginForm />
+            <LoginForm callBack={setCurrentUser} />
             <Button
               w="full"
               marginTop="5"
@@ -59,7 +59,7 @@ function Dashboard() {
         {!currentUser && registered ? (
           <>
             <RoomData />
-            <RegisterForm />
+            <RegisterForm callBack={setCurrentUser} />
             <Button
               w="full"
               marginTop="5"

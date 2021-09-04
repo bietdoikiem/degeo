@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { register } from "../../redux/ducks/auth/actions";
 
-function RegisterForm() {
+function RegisterForm(props) {
   const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
     useFormik({
@@ -35,8 +35,12 @@ function RegisterForm() {
           ),
         }),
       }),
-      onSubmit: (v) => {
-        dispatch(register({ username: v.username, password: v.password }));
+      onSubmit: async (v) => {
+        await dispatch(
+          register({ username: v.username, password: v.password })
+        );
+        // eslint-disable-next-line react/prop-types
+        await props.callBack(localStorage.getItem("currentUser"));
       },
     });
 

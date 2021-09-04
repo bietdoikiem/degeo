@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/ducks/auth/actions";
 
-function LoginForm() {
+function LoginForm(props) {
   const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
     useFormik({
@@ -24,8 +24,10 @@ function LoginForm() {
         username: Yup.string().required("Username can't be empty!"),
         password: Yup.string().required("Password can't be empty!"),
       }),
-      onSubmit: (v) => {
-        dispatch(login({ username: v.username, password: v.password }));
+      onSubmit: async (v) => {
+        await dispatch(login({ username: v.username, password: v.password }));
+        // eslint-disable-next-line react/prop-types
+        await props.callBack(localStorage.getItem("currentUser"));
       },
     });
 
