@@ -1,9 +1,8 @@
 const app = require('./app');
 // const user = require("./routes/user-api")
 const { run } = require('./connect-db');
-const http = require('http');
 const { createAllTable } = require('./create-table');
-const socketio = require('socket.io');
+const socket = require('socket.io');
 const {
 	userJoin,
 	formatMessage,
@@ -12,14 +11,27 @@ const {
 	userLeave,
 } = require('./utils');
 
-const server = http.createServer(app);
-const io = socketio(server);
+const PORT = 3000;
+createAllTable();
+run();
+
+// app.use("/users",user)
+const server = app.listen(PORT, () => {
+	console.log(`Server starts successfully on port ${PORT}`);
+});
+
+const io = socket(server, {
+	cors: {
+		origin: '*',
+	},
+});
 
 const botName = 'DeGeo Bot';
 
 io.on('connection', (socket) => {
-	socket.send("Hello World")
+	console.log(`${socket.id} is connected`);
 	socket.on('joinRoom', ({ username, room }) => {
+		console.log(`${username} has joined ${room}`);
 		const user = userJoin(socket.id, username, room);
 
 		socket.join(user.room);
@@ -36,7 +48,7 @@ io.on('connection', (socket) => {
 			.emit(
 				'message',
 				formatMessage(
-					botName,
+					'SYSTEM',
 					`${user.username} has joined the chat`,
 				),
 			);
@@ -65,7 +77,7 @@ io.on('connection', (socket) => {
 		if (user) {
 			io.to(user.room).emit(
 				'message',
-				formatMessage(botName, `${user.username} has left the chat`),
+				formatMessage('SYSTEM', `${user.username} has left the chat`),
 			);
 
 			// Send users and room info
@@ -75,13 +87,4 @@ io.on('connection', (socket) => {
 			});
 		}
 	});
-});
-
-const PORT = 3000;
-createAllTable();
-run();
-
-// app.use("/users",user)
-app.listen(PORT, () => {
-	console.log(`Server starts successfully on port ${PORT}`);
 });
