@@ -9,7 +9,7 @@ router.post("/", async (req,res) => {
     var query = "INSERT INTO location (name, lattitude, longtitude, code, region,theme) VALUES (?,?,?,?,?,?)"
     try{
         console.log("begin log data")
-        result = await InsertData(client,query,req.body.params);
+        let result = await InsertData(client,query,req.body.params);
         console.log("data inputed")
         res.json({
           message: `Location named ${req.body.params[0]} created successfully.`,

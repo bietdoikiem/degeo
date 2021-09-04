@@ -17,7 +17,7 @@ router.post("/", async (req,res) => {
         result = await InsertData(client,query,params);
         console.log("data inputed")
         res.json({
-          message: `message at ${req.body.params[0]} created successfully.`,
+          message: `message at ${params[0]} created successfully.`,
         });
     }
     catch(error){
