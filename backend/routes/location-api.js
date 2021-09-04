@@ -98,6 +98,40 @@ router.get('/code/:code', async (req, res) => {
 	
 });
 
+// add theme api 
+
+router.put("/themes/:theme", async (req, res) => {
+	var query = "UPDATE location SET subthemes = ? + subthemes";
+    var params = [[req.params.theme]]
+
+    try {
+		await SelectData(client, query, params);
+        var message = `theme ${req.params.theme} added`
+		return res.json(message);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	
+});
+
+// add video api 
+
+router.put("/videolink/", async (req, res) => {
+	var query = "UPDATE location SET videolink = ? + videolink";
+    var params = [req.body.params]
+
+    try {
+		await SelectData(client, query, params);
+        var message = `videos added`
+		return res.json(message);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	
+});
+
 
 
 // delete API 
