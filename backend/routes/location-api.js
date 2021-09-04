@@ -64,19 +64,24 @@ params : value of the above values
 */
 
 // select API 
-router.get("/",async (req,res) =>{
-				let result;
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`
-    try{
-        result = await SelectData(client,query,req.body.params);
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.json(result.first())
-}) 
+// select API
+router.get('/', async (req, res) => {
+	let query;
+	if (req.body.filter) {
+		var filter = buildFilterQuery(req.body.filter);
+		query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`;
+	} else {
+		query = 'SELECT * FROM location';
+	}
+
+	try {
+		const result = await SelectData(client, query, req.body.params);
+		return res.json(result.first());
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+});
 
 // delete API 
 router.delete("/",async(req,res) => {

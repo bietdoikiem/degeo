@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 		await InsertData(client, query, req.body.params);
 		console.log('data inputed');
 		res.json({
-			message: `Location named ${req.body.params[0]} created successfully.`,
+			message: `room named ${req.body.params[0]} created successfully.`,
 		});
 	} catch (error) {
 		console.log(error);
@@ -47,10 +47,10 @@ params : value of the above values
 router.put('/', async (req, res) => {
 	var updates = buildUpdateQuery(req.body.updates);
 	var filter = buildFilterQuery(req.body.filter);
-	var query = `UPDATE location SET ${updates} WHERE ${filter}`;
+	var query = `UPDATE room SET ${updates} WHERE ${filter}`;
 	try {
 		await UpdateData(client, query, req.body.params);
-		res.json('location updated');
+		res.json('room updated');
 	} catch (error) {
 		console.log(error);
 		return res.status(400);
@@ -69,10 +69,16 @@ params : value of the above values
 
 */
 
-// select API
+// select one API
 router.get('/', async (req, res) => {
-	var filter = buildFilterQuery(req.body.filter);
-	var query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`;
+	let query;
+	if (req.body.filter) {
+		var filter = buildFilterQuery(req.body.filter);
+		query = `SELECT * FROM room WHERE ${filter} ALLOW FILTERING`;
+	} else {
+		query = 'SELECT * FROM room';
+	}
+
 	try {
 		const result = await SelectData(client, query, req.body.params);
 		return res.json(result.first());
@@ -85,7 +91,7 @@ router.get('/', async (req, res) => {
 // delete API
 router.delete('/', async (req, res) => {
 	var filter = buildFilterQuery(req.body.filter);
-	var query = `Delete from location WHERE ${filter}`;
+	var query = `Delete from room WHERE ${filter}`;
 	try {
 		await deleteData(client, query, req.body.params);
 		res.json('location deleted');
@@ -95,4 +101,5 @@ router.delete('/', async (req, res) => {
 		return res.status(400);
 	}
 });
+
 module.exports = router;
