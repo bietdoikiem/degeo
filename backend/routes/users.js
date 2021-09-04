@@ -30,6 +30,27 @@ router.post("/", async (req,res) => {
     }
     return res.status(200)
 })
+<<<<<<< HEAD
+=======
+
+router.post('/', async (req, res) => {
+	var query =
+		'INSERT INTO users (username, email, avatar, password) VALUES (?,?,?,?)';
+	try {
+		console.log('begin log data');
+		await InsertData(client, query, req.body.params);
+		console.log('data inputed');
+		res.json({
+			message: `User named ${req.body.params[0]} created successfully.`,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	return res.status(200);
+});
+
+>>>>>>> 110e0bdacd44793b1ca00811baafc2c9fa7988c1
 
 // update API
 /*
