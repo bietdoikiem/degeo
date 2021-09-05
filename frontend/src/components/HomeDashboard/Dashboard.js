@@ -37,7 +37,7 @@ function Dashboard() {
 						>
 							Random location 🌎
 						</Button>
-						<ChatContainer />
+						<ChatContainer room="Tokyo" />
 					</Box>
 				)}
 				{!currentUser && !register ? (
