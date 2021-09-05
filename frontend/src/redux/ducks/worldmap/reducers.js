@@ -1,9 +1,9 @@
 import { MOVE_VIEWPORT } from './types';
 
 const initialState = {
-  latitude: 10.8231,
-  longitude: 106.6297,
-  zoom: 2,
+  latitude: 28.6139,
+  longitude: 77.209,
+  zoom: 1.7,
 };
 
 const reducers = (state = initialState, action) => {
