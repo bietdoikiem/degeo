@@ -69,8 +69,8 @@ const locationDetailsReducer = (state = initialLocationState, action) => {
 };
 
 const locationReducers = combineReducers({
-  locationDetails: locationReducer,
-  locations: locationDetailsReducer,
+  locationDetails: locationDetailsReducer,
+  locations: locationReducer,
 });
 
 export default locationReducers;

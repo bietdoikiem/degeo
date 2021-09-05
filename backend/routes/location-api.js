@@ -2,28 +2,36 @@ var express = require('express');
 var router = express.Router();
 const { client } = require('../connect-db');
 
-const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQuery} = require("./BaseFunction")
+const {
+  InsertData,
+  SelectData,
+  UpdateData,
+  deleteData,
+  buildFilterQuery,
+  buildUpdateQuery,
+} = require('./BaseFunction');
 
-// Create API 
-router.post("/", async (req,res) => {
-    var query = "INSERT INTO location (name, lattitude, longtitude, code,decribtion, \
-         region,thumbnail,theme, subthemes, videolink) VALUES (?,?,?,?,?,?,?,?,?,?)"
-    try{
-        console.log("begin log data")
-        await InsertData(client,query,req.body.params);
-        console.log("data inputed")
-        res.json({
-          message: `Location named ${req.body.params[0]} created successfully.`,
-        });
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-})
+// Create API
+router.post('/', async (req, res) => {
+  var query =
+    'INSERT INTO location (name, latitude, longitude, code,description, \
+         region,thumbnail,theme, subthemes, videolink) VALUES (?,?,?,?,?,?,?,?,?,?)';
+  try {
+    console.log('begin log data');
+    console.log(req.body.params);
+    await InsertData(client, query, req.body.params);
+    console.log('data inputed');
+    res.json({
+      message: `Location named ${req.body.params[0]} created successfully.`,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+  return res.status(200);
+});
 
-// update API 
+// update API
 /*
 body format for update API should have look like this
 updates : array of field to updates 
@@ -38,20 +46,19 @@ params : value of the above values
 }
 
 */
-router.put("/",async (req,res) =>{
-    var updates = buildUpdateQuery(req.body.updates);
-    var filter = buildFilterQuery(req.body.filter);
-    var query = `UPDATE location SET ${updates} WHERE ${filter}`
-    try{
-        await UpdateData(client,query,req.body.params);
-        res.json("location updated")
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-}) 
+router.put('/', async (req, res) => {
+  var updates = buildUpdateQuery(req.body.updates);
+  var filter = buildFilterQuery(req.body.filter);
+  var query = `UPDATE location SET ${updates} WHERE ${filter}`;
+  try {
+    await UpdateData(client, query, req.body.params);
+    res.json('location updated');
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+  return res.status(200);
+});
 
 /*
 body format for request of delete and select API should have look like this
@@ -64,91 +71,101 @@ params : value of the above values
 
 */
 
-// select API 
+// select API
 router.get('/', async (req, res) => {
-	let query;
-    let params;
-	if (req.body.filter) {
-		var filter = buildFilterQuery(req.body.filter);
-		query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`;
-        params = req.body.params;
-	} else {
-		query = 'SELECT * FROM location';
-        params = []
-	}
+  let query;
+  let params;
+  if (req.body.filter) {
+    var filter = buildFilterQuery(req.body.filter);
+    query = `SELECT * FROM location WHERE ${filter} ALLOW FILTERING`;
+    params = req.body.params;
+  } else {
+    query = 'SELECT * FROM location';
+    params = [];
+  }
 
-	try {
-		const result = await SelectData(client, query,params);
-		return res.json(result.rows);
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
+  try {
+    const result = await SelectData(client, query, params);
+    return res.json(result.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
 });
 
-// select one API 
+// select one API
 router.get('/code/:code', async (req, res) => {
-	var query = "SELECT * FROM location where code = ? ";
-    var params = [req.params.code]
+  var query = 'SELECT * FROM location where code = ? ';
+  var params = [req.params.code];
 
-    try {
-		const result = await SelectData(client, query, params);
-		return res.json(result.first());
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	
+  try {
+    const result = await SelectData(client, query, params);
+    return res.json(result.first());
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
 });
 
-// add theme api 
+// add theme api
 
-router.put("/themes/:theme", async (req, res) => {
-	var query = "UPDATE location SET subthemes = ? + subthemes";
-    var params = [[req.params.theme]]
+router.put('/themes/:theme', async (req, res) => {
+  var query = 'UPDATE location SET subthemes = ? + subthemes';
+  var params = [[req.params.theme]];
 
-    try {
-		await SelectData(client, query, params);
-        var message = `theme ${req.params.theme} added`
-		return res.json(message);
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	
+  try {
+    await SelectData(client, query, params);
+    var message = `theme ${req.params.theme} added`;
+    return res.json(message);
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
 });
 
-// add video api 
+// add video api
 
-router.put("/videolink/", async (req, res) => {
-	var query = "UPDATE location SET videolink = ? + videolink";
-    var params = [req.body.params]
+router.put('/videolink/', async (req, res) => {
+  var query = 'UPDATE location SET videolink = ? + videolink';
+  var params = [req.body.params];
 
-    try {
-		await SelectData(client, query, params);
-        var message = `videos added`
-		return res.json(message);
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	
+  try {
+    await SelectData(client, query, params);
+    var message = `videos added`;
+    return res.json(message);
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
 });
 
-
-
-// delete API 
-router.delete("/",async(req,res) => {
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from location WHERE ${filter}`
-    try{
-        await deleteData(client,query,req.body.params);
-        res.json("location deleted")
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-})
+// delete API
+router.delete('/', async (req, res) => {
+  var filter = buildFilterQuery(req.body.filter);
+  var query = `Delete from location WHERE ${filter}`;
+  try {
+    await deleteData(client, query, req.body.params);
+    res.json('location deleted');
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+  return res.status(200);
+});
 module.exports = router;
+
+router.delete('/drop', async (req, res) => {
+  const query = `DROP TABLE IF EXISTS miraclekidsdb.location`;
+  try {
+    // execute drop query
+    await client.execute(query);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).status({
+      message: `ERROR! ${error}`,
+    });
+  }
+  return res.status(200).json({
+    message: 'Table location dropped successfully',
+  });
+});

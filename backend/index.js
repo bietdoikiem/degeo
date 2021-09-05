@@ -16,7 +16,7 @@ createAllTable();
 run();
 
 // app.use("/users",user)
-const server = app.listen(PORT, () => {
+const server = app.listen(process.env.PORT || PORT, () => {
 	console.log(`Server starts successfully on port ${PORT}`);
 });
 

@@ -55,7 +55,7 @@ export const fetchLocationDetails = (code) => async (dispatch) => {
   dispatch(fetchLocationDetailsRequest());
   try {
     const result = await axios.get(
-      `${process.env.REACT_APP_API_URL}/locations/${code}`
+      `${process.env.REACT_APP_API_URL}/locations/code/${code}`
     );
     const location = result.data;
     dispatch(fetchLocationDetailsSuccess(location));
