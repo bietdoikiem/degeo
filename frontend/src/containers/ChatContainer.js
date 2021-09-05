@@ -40,6 +40,7 @@ const ChatContainer = ({ room }) => {
 
 	const handleSend = () => {
 		socket.emit('chatMessage', formValues.message);
+		// axios.post(`${process.env.REACT_APP_API_URL}`)
 	};
 
 	socket.on('message', (data) => {

@@ -37,7 +37,9 @@ function Dashboard() {
 		setRegistered(!registered);
 	};
 
-	const path = window.location.pathname.split('/');
+	const path = React.useMemo(() =>
+		window.location.pathname.split('/'),
+	);
 
 	const handleLogout = () => {
 		dispatch(logout());
@@ -85,14 +87,6 @@ function Dashboard() {
 					{currentUser && (
 						<Box>
 							<RoomData />
-							<Button
-								w="full"
-								marginTop="5"
-								colorScheme="blue"
-								onClick={onRegister}
-							>
-								Random location 🌎
-							</Button>
 							{path.includes('locations') && (
 								<ChatContainer room={path[2]} />
 							)}
