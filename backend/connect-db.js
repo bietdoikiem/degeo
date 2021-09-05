@@ -16,8 +16,8 @@ async function run() {
 	await client.connect();
 
 	
-	// await client.execute("DROP TABLE miraclekidsdb.location ");
-	// await client.execute("DROP TABLE miraclekidsdb.locationdetail ");
+	// await client.execute("DROP TABLE miraclekidsdb.room ");
+	// await client.execute("DROP TABLE miraclekidsdb.roommessage ");
 	// Execute a query
 	[
 		'users',

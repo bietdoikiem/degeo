@@ -32,7 +32,7 @@ async function createAllTable(){
 
     // Room table
     var RoomTable = "room";
-    var RoomTableSchema = "( name text, participants list<text>, Service list<text>,games list<text>, PRIMARY KEY (name));";
+    var RoomTableSchema = "( name text, participants list<text>, Service list<text>,games list<text>,locationcode text, PRIMARY KEY (name));";
     await createTable(RoomTableSchema,RoomTable);
 
     // Playlist table

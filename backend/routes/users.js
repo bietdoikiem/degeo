@@ -75,19 +75,26 @@ params : value of the above values
 */
 
 // select API 
-router.get("/",async (req,res) =>{
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`
-    try{
-        var result = await SelectData(client,query,req.body.params);
-        return res.json(result.first())
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    
-}) 
+router.get('/', async (req, res) => {
+	let query;
+    let params;
+	if (req.body.filter) {
+		var filter = buildFilterQuery(req.body.filter);
+		query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`;
+        params = req.body.params;
+	} else {
+		query = 'SELECT username, avatar FROM users';
+        params = []
+	}
+
+	try {
+		const result = await SelectData(client, query,params);
+		return res.json(result.rows);
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+});
 
 router.post("/login",async (req,res) =>{
     // var filter = buildFilterQuery(req.body.filter)

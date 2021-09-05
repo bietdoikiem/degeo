@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
 
 	try {
 		const result = await SelectData(client, query, req.body.params);
-		return res.json(result.first());
+		return res.json(result.rows);
 	} catch (error) {
 		console.log(error);
 		return res.status(400);

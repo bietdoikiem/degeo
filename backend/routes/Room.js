@@ -14,7 +14,7 @@ const {
 // Create API
 router.post('/', async (req, res) => {
 	var query =
-		'INSERT INTO room (name,participants, Service, games) VALUES (?,?,?,?)';
+		'INSERT INTO room (name,participants, Service, games, locationcode) VALUES (?,?,?,?,?)';
 	var paramsRoomMessage = [req.body.params[0],[]]
 	var queryRoomMessage = 
 		"Insert INTO roommessage (room, messages) VALUES (?,?)"
@@ -75,11 +75,20 @@ params : value of the above values
 
 // select one API
 router.get('/', async (req, res) => {
-	var filter = buildFilterQuery(req.body.filter);
-	var query = `SELECT * FROM room WHERE ${filter} ALLOW FILTERING`;
+	let query;
+    let params;
+	if (req.body.filter) {
+		var filter = buildFilterQuery(req.body.filter);
+		query = `SELECT * FROM room WHERE ${filter} ALLOW FILTERING`;
+        params = req.body.params;
+	} else {
+		query = 'SELECT * FROM room';
+        params = []
+	}
+
 	try {
-		const result = await SelectData(client, query, req.body.params);
-		return res.json(result.first());
+		const result = await SelectData(client, query,params);
+		return res.json(result.rows);
 	} catch (error) {
 		console.log(error);
 		return res.status(400);

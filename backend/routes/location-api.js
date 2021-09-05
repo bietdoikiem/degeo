@@ -6,7 +6,7 @@ const{InsertData,SelectData,UpdateData,deleteData,buildFilterQuery,buildUpdateQu
 
 // Create API 
 router.post("/", async (req,res) => {
-    var query = "INSERT INTO location (name, lattitude, longtitude, code,decribtion, \
+    var query = "INSERT INTO location (name, lattitude, longtitude, code,describtion, \
          region,thumbnail,theme, subthemes, videolink) VALUES (?,?,?,?,?,?,?,?,?,?)"
     try{
         console.log("begin log data")
@@ -64,6 +64,23 @@ params : value of the above values
 
 */
 
+// select one API 
+router.get('/:code', async (req, res) => {
+	var query = "SELECT * FROM location where code = ?";
+    var params = [req.params.code]
+    console.log("running")
+    console.log(params)
+
+    try {
+		const result = await SelectData(client, query, params);
+		return res.json(result.first());
+	} catch (error) {
+		console.log(error);
+		return res.status(400);
+	}
+	
+});
+
 // select API 
 router.get('/', async (req, res) => {
 	let query;
@@ -86,20 +103,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// select one API 
-router.get('/code/:code', async (req, res) => {
-	var query = "SELECT * FROM location where code = ? ";
-    var params = [req.params.code]
 
-    try {
-		const result = await SelectData(client, query, params);
-		return res.json(result.first());
-	} catch (error) {
-		console.log(error);
-		return res.status(400);
-	}
-	
-});
 
 // add theme api 
 
