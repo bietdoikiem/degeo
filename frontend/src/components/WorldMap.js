@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactMapGL, { Marker, FlyToInterpolator } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as WorldMapActions } from '../redux/ducks/worldmap';
@@ -33,6 +33,7 @@ function WorldMap({ locations }) {
       >
         {locations.map((location) => (
           <Marker
+            key={location.name}
             latitude={location.latitude}
             longitude={location.longitude}
             offsetTop={-10}
@@ -51,9 +52,16 @@ function WorldMap({ locations }) {
 WorldMap.propTypes = {
   locations: PropTypes.arrayOf(
     PropTypes.shape({
+      code: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      lat: PropTypes.number.isRequired,
-      long: PropTypes.number.isRequired,
+      description: PropTypes.string.isRequired,
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      region: PropTypes.string.isRequired,
+      subthemes: PropTypes.arrayOf(PropTypes.string.isRequired),
+      theme: PropTypes.string.isRequired,
+      thumbnail: PropTypes.string.isRequired,
+      videolink: PropTypes.arrayOf(PropTypes.string.isRequired),
     })
   ),
 };

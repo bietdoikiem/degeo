@@ -1,31 +1,9 @@
 import { useEffect } from 'react';
+import { Spinner } from '@chakra-ui/react';
 // Redux imports
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as locationActions } from '../redux/ducks/location';
 import WorldMap from '../components/WorldMap';
-
-const mockData = {
-  loading: false,
-  locations: [
-    {
-      code: 'HCMC',
-      name: 'Ho Chi Minh City',
-      latitude: 10.8231,
-      longitude: 106.6297,
-      region: 'Asia',
-      theme: 'Vietnam Culture',
-    },
-    {
-      code: 'TOKYO',
-      name: 'Tokyo',
-      latitude: 35.6762,
-      longitude: 139.6503,
-      region: 'Asia',
-      theme: 'Anime',
-    },
-  ],
-  error: '',
-};
 
 function WorldMapContainer() {
   /**
@@ -34,15 +12,32 @@ function WorldMapContainer() {
    * error: error.message
    */
   // FIXME: Remember to switch to real data on PRODUCTION!!!
-  const data = useSelector((state) => state.location);
+  const data = useSelector((state) => state.location.locations);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(locationActions.fetchLocations());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(locationActions.fetchLocations());
+  }, [dispatch]);
   return (
     <>
-      <WorldMap locations={mockData.locations} />
+      {data.loading ? (
+        <Spinner
+          zIndex={50}
+          size="xl"
+          color="#3798a7"
+          style={{
+            margin: 'auto',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          }}
+        />
+      ) : (
+        // {console.log(data.loading)}
+        <WorldMap locations={data.locations} />
+      )}
     </>
   );
 }

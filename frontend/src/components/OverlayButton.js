@@ -21,7 +21,7 @@ function OverlayButton({ title, width, height, style }) {
           borderRadius: '28px 28px',
         }}
       >
-        <Box margin="0 auto" width="69%" pt="15px">
+        <Box margin="0 auto" width="69%" pt="15px" textAlign="center">
           <Box as="span" color="#1E425E" fontWeight={800}>
             {' '}
             {title} {getEmoji()}{' '}

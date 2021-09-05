@@ -1,18 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import ReactPlayer from 'react-player';
 import { Box } from '@chakra-ui/react';
 import { locationType } from '../prop-types';
 import OverlayLoading from './OverlayLoading';
 import OverlayButton from './OverlayButton';
+import OverlaySpotify from './OverlaySpotify';
 
 function LocationFrame({ location }) {
   return (
     <>
       <OverlayButton title={location.name} />
       <OverlayLoading />
+      <OverlaySpotify />
       <Box position="relative" paddingTop="56.25%" pointerEvents="none">
         <ReactPlayer
-          url={location.videoURL}
+          url={location.videolink[0]}
           muted
           width="100%"
           height="100%"
