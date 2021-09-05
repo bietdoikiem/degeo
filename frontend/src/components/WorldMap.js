@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ReactMapGL, { Marker, FlyToInterpolator } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as WorldMapActions } from '../redux/ducks/worldmap';
@@ -11,20 +11,12 @@ function WorldMap({ locations }) {
   const currentViewport = useSelector((state) => state.worldmap);
   const dispatch = useDispatch();
 
-  // React-router-dom components
-  const history = useHistory();
-
   const onViewportChange = useCallback(
     (viewport) => {
       dispatch(WorldMapActions.moveViewport(viewport));
     },
     [dispatch]
   );
-
-  const navigateToLocationCode = (code) => {
-    console.log('Triggered');
-    history.push(`/${code}`);
-  };
 
   return (
     <>
@@ -45,12 +37,10 @@ function WorldMap({ locations }) {
             longitude={location.longitude}
             offsetTop={-10}
           >
-            <Box
-              as="div"
-              className="pin bounce"
-              onClick={() => console.log(location.code)}
-            />
-            <Box as="div" className="pulse" />
+            <Link to={`/locations/${location.code}`}>
+              <Box as="div" className="pin bounce" />
+              <Box as="div" className="pulse" />
+            </Link>
           </Marker>
         ))}
       </ReactMapGL>

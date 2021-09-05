@@ -1,8 +1,8 @@
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import './App.css';
-import routes from './routes';
-import Dashboard from './components/HomeDashboard/Dashboard';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import "./App.css";
+import routes from "./routes";
+import Dashboard from "./components/HomeDashboard/Dashboard";
 
 function App() {
   return (

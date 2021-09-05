@@ -1,35 +1,36 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const { client } = require('../connect-db');
+const { client } = require("../connect-db");
 
 const {
-	InsertData,
-	SelectData,
-	UpdateData,
-	deleteData,
-	buildFilterQuery,
-	buildUpdateQuery,
-} = require('./BaseFunction');
+  InsertData,
+  SelectData,
+  UpdateData,
+  deleteData,
+  buildFilterQuery,
+  buildUpdateQuery,
+} = require("./BaseFunction");
 
-// Create API 
-router.post("/", async (req,res) => {
-    var query = "INSERT INTO users (username,password , avatar) VALUES (?,?,?)"
-    try{
-        console.log("begin log data")
-        var params = req.body.params
-        params.push("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIJAMYsnB-A9QtoTTT07oFMK3Ksj6cp07KqYX0OwyQPabx0NnpfoixjWpqzYo5T7W6dZo&usqp=CAU")
-        await InsertData(client,query,params);
-        console.log("data inputed")
-        res.json({
-          message: `User named ${req.body.params[0]} created successfully.`,
-        });
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-})
+// Create API
+router.post("/", async (req, res) => {
+  var query = "INSERT INTO users (username,password , avatar) VALUES (?,?,?)";
+  try {
+    console.log("begin log data");
+    var params = req.body.params;
+    params.push(
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIJAMYsnB-A9QtoTTT07oFMK3Ksj6cp07KqYX0OwyQPabx0NnpfoixjWpqzYo5T7W6dZo&usqp=CAU"
+    );
+    await InsertData(client, query, params);
+    console.log("data inputed");
+    res.json({
+      message: `User named ${req.body.params[0]} created successfully.`,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+  return res.status(200);
+});
 
 // update API
 /*
@@ -46,20 +47,19 @@ params : value of the above values
 }
 
 */
-router.put("/",async (req,res) =>{
-    var updates = buildUpdateQuery(req.body.updates);
-    var filter = buildFilterQuery(req.body.filter);
-    var query = `UPDATE users SET ${updates} WHERE ${filter}`
-    try{
-        await UpdateData(client,query,req.body.params);
-        res.json("user updated")
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-}) 
+router.put("/", async (req, res) => {
+  var updates = buildUpdateQuery(req.body.updates);
+  var filter = buildFilterQuery(req.body.filter);
+  var query = `UPDATE users SET ${updates} WHERE ${filter}`;
+  try {
+    await UpdateData(client, query, req.body.params);
+    res.json("user updated");
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+  return res.status(200);
+});
 
 /*
 body format for request of delete and select API should have look like this
@@ -74,48 +74,43 @@ params : value of the above values
 
 */
 
-// select API 
-router.get("/",async (req,res) =>{
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`
-    try{
-        var result = await SelectData(client,query,req.body.params);
-        return res.json(result.first())
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    
-}) 
+// select API
+router.get("/", async (req, res) => {
+  var filter = buildFilterQuery(req.body.filter);
+  var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`;
+  try {
+    var result = await SelectData(client, query, req.body.params);
+    return res.json(result.first());
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+});
 
-router.post("/login",async (req,res) =>{
-    // var filter = buildFilterQuery(req.body.filter)
-    var filter = "username = ? and password = ?"
-    var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`
-    try{
-        var result = await SelectData(client,query,req.body.params);
-        return res.json(result.first())
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    
-}) 
+router.post("/login", async (req, res) => {
+  // var filter = buildFilterQuery(req.body.filter)
+  var filter = "username = ? and password = ?";
+  var query = `SELECT username, avatar FROM users WHERE ${filter} ALLOW FILTERING`;
+  try {
+    var result = await SelectData(client, query, req.body.params);
+    return res.json(result.first());
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+});
 
-// delete API 
-router.delete("/",async(req,res) => {
-    var filter = buildFilterQuery(req.body.filter)
-    var query = `Delete from users WHERE ${filter}`
-    try{
-        await deleteData(client,query,req.body.params);
-        res.json("user deleted")
-    }
-    catch(error){
-        console.log(error)
-        return res.status(400)
-    }
-    return res.status(200)
-})
+// delete API
+router.delete("/", async (req, res) => {
+  var filter = buildFilterQuery(req.body.filter);
+  var query = `Delete from users WHERE ${filter}`;
+  try {
+    await deleteData(client, query, req.body.params);
+    res.json("user deleted");
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+  return res.status(200);
+});
 module.exports = router;
