@@ -13,8 +13,8 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { register } from "../../redux/ducks/auth/actions";
 
-function RegisterForm() {
-		const dispatch = useDispatch();
+function RegisterForm(props) {
+  const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } =
     useFormik({
       initialValues: {
@@ -23,20 +23,24 @@ function RegisterForm() {
         confirmPassword: "",
       },
       validationSchema: Yup.object({
-        username: Yup.string().required("Username can't be empty"),
-        password: Yup.string("Password can't be empty")
-          .min(8, "Password must be at least 8 characters")
-          .required(),
+        username: Yup.string().required("Username can't be empty!"),
+        password: Yup.string()
+          .required("Password can't be empty!")
+          .min(8, "Password must be at least 8 characters!"),
         confirmPassword: Yup.string().when("password", {
           is: (val) => !!(val && val.length > 0),
           then: Yup.string().oneOf(
             [Yup.ref("password")],
-            "Both password need to be the same"
+            "Both password need to be the same!"
           ),
         }),
       }),
-      onSubmit: (v) => {
-									dispatch(register({email: v.email, password: v.password}))
+      onSubmit: async (v) => {
+        await dispatch(
+          register({ username: v.username, password: v.password })
+        );
+        // eslint-disable-next-line react/prop-types
+        await props.callBack(localStorage.getItem("currentUser"));
       },
     });
 
