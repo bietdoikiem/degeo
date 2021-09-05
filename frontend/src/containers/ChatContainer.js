@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import {
 	Badge,
@@ -9,64 +10,54 @@ import {
 	InputRightElement,
 	Button,
 } from '@chakra-ui/react';
-import * as moment from 'moment';
+import { io } from 'socket.io-client';
+import PropTypes from 'prop-types';
+
+let roomUser;
 
 const mockCurrentUser = {
 	email: 'cqtin0903@gmail.com',
 };
-const mockMessages = [
-	{
-		sender: 'cqtin0903@gmail.com',
-		body: 'Hi there',
-		createdAt: moment().unix(),
-	},
-	{
-		sender: 'cqtin0903@gmail.com',
-		body: 'How are you',
-		createdAt: moment().subtract(5, 'minutes').unix(),
-	},
-	{
-		sender: 'userA@gmail.com',
-		body: 'Toi ten la TIn',
-		createdAt: moment().subtract(10, 'minutes').unix(),
-	},
-	{
-		sender: 'userB@gmail.com',
-		body: 'RMIT University',
-		createdAt: moment().subtract(2, 'minutes').unix(),
-	},
-	{
-		sender: 'cqtin0903@gmail.com',
-		body: "Hi therery. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five cez",
-		createdAt: moment().unix(),
-	},
-	{
-		sender: 'cqtin0903@gmail.com',
-		body: 'How are you',
-		createdAt: moment().subtract(5, 'minutes').unix(),
-	},
-	{
-		sender: 'userA@gmail.com',
-		body: 'Toi ten la TIn',
-		createdAt: moment().subtract(10, 'minutes').unix(),
-	},
-	{
-		sender: 'userB@gmail.com',
-		body: 'RMIT University',
-		createdAt: moment().subtract(2, 'minutes').unix(),
-	},
-];
 
-const ChatContainer = () => {
+const socket = io(process.env.REACT_APP_API_URL);
+
+socket.on('roomUsers', (data) => {
+	roomUser = data.users;
+});
+
+const ChatContainer = ({ room }) => {
+	const [messages, setMessages] = React.useState([]);
 	const [formValues, setFormValue] = React.useState({
 		username: '',
 		password: '',
 		message: '',
 	});
 
+	React.useEffect(() => {
+		socket.emit('joinRoom', {
+			username: mockCurrentUser.email,
+			room,
+		});
+	}, []);
+
 	const handleLogout = () => {};
 
-	const handleSend = () => {};
+	const handleSend = () => {
+		socket.emit('chatMessage', formValues.message);
+	};
+
+	socket.on('message', (data) => {
+		if (data) {
+			setMessages([
+				...messages,
+				{
+					sender: data.username,
+					body: data.text,
+					createdAt: data.time,
+				},
+			]);
+		}
+	});
 
 	return (
 		<Box marginTop="5">
@@ -74,11 +65,11 @@ const ChatContainer = () => {
 				<Box shadow="md" h="600" w="full">
 					<Box bg="white" shadow="md" w="100%" p={4} color="white">
 						<Badge borderRadius="full" px="2" colorScheme="teal">
-							20 Online 😉
+							{roomUser?.length} Online 😉
 						</Badge>
 					</Box>
 					<Box h="450" p="5" overflow="auto">
-						{mockMessages.map((message) =>
+						{messages.map((message) =>
 							mockCurrentUser.email === message.sender ? (
 								<Box w="100%">
 									<Text marginBottom="1">😗 You</Text>
@@ -93,6 +84,14 @@ const ChatContainer = () => {
 										<Text>{message.body}</Text>
 									</Box>
 								</Box>
+							) : message.sender === 'SYSTEM' ? (
+								<Text
+									marginBottom="1"
+									alignItems="center"
+									textAlign="center"
+								>
+									{message.body}
+								</Text>
 							) : (
 								<Box w="100%">
 									<Text marginBottom="1">{message.sender}</Text>
@@ -141,6 +140,10 @@ const ChatContainer = () => {
 			</Center>
 		</Box>
 	);
+};
+
+ChatContainer.propTypes = {
+	room: PropTypes.string,
 };
 
 export default ChatContainer;
